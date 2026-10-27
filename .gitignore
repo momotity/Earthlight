@@ -1,0 +1,23 @@
+# ---------- 依赖与构建产物 ----------
+node_modules/
+dist/
+.vite/
+*.local
+
+# ---------- 运行/调试产物 ----------
+*.log
+npm-debug.log*
+# CDP 截图工具的输出（预览图要保留，临时图不进版本库）
+shot*.png
+crop*.png
+dev_check.png
+__pycache__/
+*.pyc
+
+# ---------- 系统与编辑器 ----------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

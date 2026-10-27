@@ -1,0 +1,80 @@
+/* =========================================================
+   base.css — 变量 / 重置 / 画布 / 加载层
+   ========================================================= */
+:root {
+  --bg: #04060c;
+  --panel: rgba(10, 16, 28, .72);
+  --panel-solid: #0a101c;
+  --line: rgba(110, 170, 255, .16);
+  --line-strong: rgba(110, 170, 255, .34);
+  --text: #dde7f6;
+  --dim: #7c8fa9;
+  --dim2: #556478;
+  --accent: #54a8ff;
+  --warm: #ffb257;
+  --cyan: #5fe3d0;
+  --star: #cfe2ff;
+  --r: 14px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-feature-settings: "tnum";
+}
+
+canvas {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#app > * { pointer-events: auto; }
+
+/* ---------- 加载层 ---------- */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: opacity .7s .15s;
+}
+#loader.gone { opacity: 0; pointer-events: none; }
+#loader .ring {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(110, 170, 255, .16);
+  border-top-color: var(--accent);
+  animation: spin .9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loader p {
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: .3em;
+  color: var(--dim2);
+  text-transform: uppercase;
+}

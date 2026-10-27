@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>地球 · 日出日落 · 星座</title>
+<meta name="description" content="可交互的 3D 地球：晨昏线、日出日落、真实星空与星座（按季节与时刻定位）">
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<!-- 星座名称图层：由 ui/sky-labels.js 每帧投影定位 -->
+<div id="skyLabels" aria-hidden="true"></div>
+
+<div id="app">
+  <header class="brand">
+    <div class="mark"></div>
+    <div>
+      <h1>地球 · 日出日落</h1>
+      <p>Earth · Terminator · Constellations</p>
+    </div>
+  </header>
+
+  <section class="panel left">
+    <div class="grp">
+      <div class="lbl">季节 <b id="seasonName">春分</b></div>
+      <div class="seasons">
+        <button data-seg="79">春分</button>
+        <button data-seg="172">夏至</button>
+        <button data-seg="266">秋分</button>
+        <button data-seg="356">冬至</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="lbl">日期 <b id="dateOut">3月20日</b></div>
+      <input id="daySlider" type="range" min="1" max="365" step="1" value="79">
+      <div class="lbl" style="margin-top:-2px">
+        <span class="mini">太阳赤纬</span><span class="mini" id="declOut">0.0°</span>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="lbl">自转速度</div>
+      <div class="speeds">
+        <button data-spd="1">实时</button>
+        <button data-spd="300">×300</button>
+        <button data-spd="1800">×1800</button>
+        <button data-spd="10800">×10800</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <div class="lbl">视角 <b id="viewName">晨昏线</b></div>
+      <div class="views">
+        <button data-view="terminator" class="on">晨昏线</button>
+        <button data-view="sun">太阳</button>
+      </div>
+    </div>
+
+    <div class="ghostrow">
+      <button class="ghost" id="resetBtn">回到此刻</button>
+      <button class="ghost on" id="skyToggle">星座名称 · 开</button>
+    </div>
+
+    <div class="hint">拖动旋转 · 滚轮缩放 · 悬停看时刻 · 点击城市看日出日落</div>
+    <div class="hint note">「晨昏线」机位下半亮半暗，太阳在 84° 开外必然出画，画面边缘的标记指出它的方向</div>
+    <div class="hint note">星空为真实星表（5044 颗 · 88 星座），按恒星时定位；点星座名可转向它</div>
+  </section>
+
+  <aside class="panel right">
+    <div class="card" id="cityCard">
+      <div class="top">
+        <div>
+          <div class="name" id="cName">—</div>
+          <div class="prov" id="cProv">选择一座城市</div>
+        </div>
+        <span class="badge day" id="cBadge" style="visibility:hidden">白天</span>
+      </div>
+      <div class="bigtime" id="cTime">--:--<small>:--</small></div>
+      <div class="sub" id="cSub">当地时间</div>
+      <div class="arc" id="cArc"></div>
+      <div class="metrics">
+        <div class="metric"><span class="k">太阳高度</span><span class="v" id="mAlt">—</span></div>
+        <div class="metric"><span class="k">昼长</span><span class="v" id="mDay">—</span></div>
+        <div class="metric"><span class="k">日出</span><span class="v" id="mRise">—</span></div>
+        <div class="metric"><span class="k">日落</span><span class="v" id="mSet">—</span></div>
+      </div>
+    </div>
+    <div class="listwrap">
+      <div class="lbl"><span id="gTitle">此刻正在日出 / 日落</span> <span class="mini" id="gCount"></span></div>
+      <div id="goldenList"><div class="empty">没有城市正处于晨昏线上</div></div>
+    </div>
+  </aside>
+
+  <footer class="clockbar">
+    <div class="clock"><span class="k">UTC</span><span class="v" id="utcClock">--:--:--</span></div>
+    <div class="clock main"><span class="k">北京时间</span><span class="v" id="cstClock">--:--:--</span></div>
+    <div class="clock"><span class="k">太阳直射</span><span class="v" id="subsolar">--</span></div>
+  </footer>
+
+  <div id="tip"></div>
+  <div id="pin"><span class="t"></span></div>
+  <!-- 画面外的太阳方位标记：位置由 ui/sun-marker.js 每帧算 -->
+  <div id="sunMark" title="太阳在画面外 · 点一下转过去看"><i></i><span>太阳</span></div>
+</div>
+
+<div id="loader"><div class="ring"></div><p>正在构建地球</p></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

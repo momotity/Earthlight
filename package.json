@@ -1,0 +1,34 @@
+{
+  "name": "earth-sunrise",
+  "version": "2.0.0",
+  "private": true,
+  "description": "可交互的 3D 地球 · 日出日落 · 晨昏线 · 真实星空与星座（Three.js + Vite）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "test:watch": "node --test --watch \"tests/**/*.test.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "npm run lint && npm test && npm run build",
+    "shot": "python3 tools/cdpshot.py dist/index.html preview-desktop.png",
+    "verify": "python3 tools/verify_sky.py",
+    "gen:cities": "python3 tools/gen_cities.py",
+    "gen:sky": "python3 tools/gen_sky.py",
+    "gen:all": "npm run gen:cities && npm run gen:sky"
+  },
+  "dependencies": {
+    "three": "0.149.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4",
+    "globals": "^17.13.0",
+    "vite": "^5.4.10",
+    "vite-plugin-singlefile": "^2.0.2"
+  }
+}

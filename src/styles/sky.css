@@ -1,0 +1,66 @@
+/* =========================================================
+   sky.css — 星座名称图层
+   名字用 DOM 渲染而不是 Sprite：屏幕像素级清晰、可避让、可点击。
+   为了不抢地球的戏，默认是「淡淡的一层光」，悬停才点亮。
+   ========================================================= */
+
+#skyLabels {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sky-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 2px 4px;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .16em;
+  color: var(--star);
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition: opacity .3s ease, color .2s ease, text-shadow .2s ease;
+  text-shadow:
+    0 0 6px rgba(40, 80, 160, .95),
+    0 0 14px rgba(20, 44, 110, .75),
+    0 1px 2px rgba(0, 0, 0, .95);
+  -webkit-font-smoothing: antialiased;
+}
+
+.sky-label .abbr {
+  display: none;
+  margin-left: 5px;
+  font-size: 8.5px;
+  letter-spacing: .1em;
+  opacity: .55;
+  font-weight: 400;
+}
+
+.sky-label:hover {
+  color: #ffffff;
+  text-shadow:
+    0 0 10px rgba(120, 190, 255, 1),
+    0 0 26px rgba(60, 130, 255, .85),
+    0 1px 3px rgba(0, 0, 0, 1);
+}
+
+/* 窄屏：字小一号，避免糊住地球 */
+@media (max-width: 1000px) {
+  .sky-label { font-size: 10px; letter-spacing: .1em; }
+}
+
+@media (max-width: 620px) {
+  .sky-label { font-size: 9px; letter-spacing: .06em; padding: 1px 2px; }
+}
