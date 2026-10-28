@@ -393,6 +393,8 @@ window.__app = {
   getInsets: () => ({ ...insets }),
   /** 切换机位：'terminator' 晨昏线 / 'sun' 太阳 */
   applyView,
+  /** 选中某座城市（按索引，传 -1 取消）：录制/演示用 */
+  selectCity,
   /** 切到某一天（含相机俯仰修正），控制台调参/截图用 */
   setDay: (doy) => {
     state.doy = doy;

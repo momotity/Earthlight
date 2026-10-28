@@ -7,6 +7,11 @@
 
 ![预览](./preview-desktop.png)
 
+手机端演示 —— 定位珠海、自转 ×1800、晨昏线机位，7 秒走完 3.5 小时，
+能看到晨昏暖带扫过中国大陆（右上角是仓库二维码，扫码即达）：
+
+![手机端演示](./preview-mobile.gif)
+
 ---
 
 ## 快速开始
@@ -123,7 +128,9 @@ earth-sunrise/
 │  ├─ data/                    # 自动生成，勿手改
 │  │  ├─ cities.js
 │  │  └─ sky.js
-│  ├─ assets/textures/         # day / night / clouds（webp）
+│  ├─ assets/
+│  │  ├─ textures/             # day / night / clouds（webp）
+│  │  └─ qr-github.svg         # 右上角开源地址二维码（矢量，3 KB）
 │  └─ styles/                  # base / sky / panels
 ├─ tests/                      # node:test 单元测试（不需要构建、不需要浏览器）
 │  ├─ math.test.js
@@ -135,7 +142,8 @@ earth-sunrise/
    ├─ gen_cities.py            # 生成 src/data/cities.js
    ├─ gen_sky.py               # 生成 src/data/sky.js（从 raw/*.json）
    ├─ verify_sky.py            # 跨语言对账（Python 复算 vs 浏览器 DOM）
-   ├─ cdpshot.py               # headless Chrome + CDP 截图/取值
+   ├─ cdpshot.py               # headless Chrome + CDP 截图/取值/录屏
+   ├─ record.py                # 录 GIF（screencast 推帧 → Pillow 合成）
    └─ raw/                     # d3-celestial 原始星表与星座连线
 ```
 

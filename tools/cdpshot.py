@@ -112,6 +112,54 @@ class CDP:
         r = self.call("Runtime.evaluate", {"expression": expr, "returnByValue": True, "awaitPromise": True})
         return r.get("result", {}).get("value")
 
+    # ---------- 事件流（录屏用）----------
+    def start_screencast(self, width, height, fmt="png", quality=92, every=1):
+        """开一路 screencast。它由合成器推帧，不像 captureScreenshot 那样
+        每次强制同步渲染 —— 后者在 swiftshader 下每帧要多花 ~275ms。"""
+        self.call("Page.startScreencast", {
+            "format": fmt, "quality": quality, "maxWidth": width,
+            "maxHeight": height, "everyNthFrame": every
+        })
+
+    def stop_screencast(self):
+        try:
+            self.call("Page.stopScreencast", {}, timeout=10)
+        except Exception:
+            pass
+
+    def pump_frames(self, want=9999, duration=None, idle_timeout=8.0, total_timeout=180.0):
+        """收帧，返回 [(timestamp, bytes), …]。
+
+        duration 给定时，按**首帧时间戳**起算，够了就停（比按墙钟稳，
+        因为 socket 收包有抖动）。每帧必须回 ack，否则 Chrome 只推一帧就停。
+        阻塞读是安全的：screencast 会持续推，真卡住就靠 socket 超时报错退出
+        （不要吞掉超时后继续读 —— 半帧会让后续解析错位）。"""
+        out = []
+        t0 = time.time()
+        t_first = None
+        self.ws.s.settimeout(idle_timeout)
+        try:
+            while len(out) < want:
+                if time.time() - t0 > total_timeout:
+                    break
+                msg = json.loads(self.ws.recv())
+                if msg.get("method") != "Page.screencastFrame":
+                    continue
+                p = msg["params"]
+                stamp = p["metadata"].get("timestamp", time.time())
+                if t_first is None:
+                    t_first = stamp
+                out.append((stamp, base64.b64decode(p["data"])))
+                self.ws.send({"id": -len(out) - 1000,
+                              "method": "Page.screencastFrameAck",
+                              "params": {"sessionId": p["sessionId"]}})
+                if duration and stamp - t_first >= duration:
+                    break
+        finally:
+            self.ws.s.settimeout(60)
+            self.stop_screencast()
+        return out
+
 
 def launch(size=(1600, 950), scale=1, port=9333):
     """启动一个 headless Chrome 并连上 CDP。返回 (进程, CDP 连接)。"""
